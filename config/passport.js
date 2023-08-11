@@ -15,12 +15,12 @@ passport.use(
         const user = await User.findOne({email});
 
         if (!user) {
-          return done(null, false, {message: "Incorrect Email"});
+          return done(null, false, {message: " - incorrect email", type: "email"});
         }
 
         const isCorrectPass = await bcrypt.compare(password, user.password);
         if (!isCorrectPass) {
-          return done(null, false, {message: "Incorrect password"});
+          return done(null, false, {message: " - incorrect password", type: "password"});
         }
 
         return done(null, user);
@@ -42,7 +42,7 @@ passport.use(
       const user = await User.findById(payload.sub);
 
       if (!user) {
-        return done(null, false);
+        return done(null, false, {message: " - incorrect email"});
       }
 
       return done(null, user);

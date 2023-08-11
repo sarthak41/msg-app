@@ -1,0 +1,133 @@
+.chat {
+  grid-template-columns: 1fr 5fr;
+}
+
+.chat-list {
+  padding: 0.5rem;
+  background-color: rgb(50,50,50);
+  border-right: 4px solid rgba(40, 40, 40, 0.3);
+}
+
+.green-btn {
+  background-color: var(--green);
+}
+
+.green-btn:hover {
+  box-shadow: inset 20em 0 0 0 var(--green-2);
+}
+
+.people button {
+  position: relative;
+  padding: 0.8rem;
+  background-color: rgb(50,50,50);
+
+  border: none;
+  border-radius: 4px;
+
+  transition: 0.1s;
+}
+
+.people button::after {
+  content: "";
+  height: 1px;
+  width: 97%;
+  background-color: var(--grey-transparent);
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.people button:hover {
+  background-color: rgb(75, 75, 75);
+}
+
+.chat-box-overlay {
+  grid-template-rows: 1fr 10fr 1fr;
+}
+
+.chat-box-overlay * {
+  color: white;
+}
+
+.chat-header {
+  padding: 0.3rem 1rem;
+
+  background-color: rgb(55, 55, 55);
+  border-bottom: 4px solid rgba(40, 40, 40, 0.3);
+}
+
+.icon {
+  padding: 0.3rem;
+  background-color: inherit;
+  border: none;
+}
+
+.icon>img {
+  height: 27px;
+  width: 27px;
+  filter: invert(0.7);
+  transition: 0.2s;
+}
+
+.icon>img:hover {
+  filter: invert(1);
+}
+
+.messages {
+  background-color: rgb(55, 55, 55);
+  /* padding-left: 2rem; */
+  padding-top: 0.5rem;
+  border-bottom: 4px solid rgba(40, 40, 40, 0.3);
+}
+
+.msg {
+  width: 100%;
+  transition: 0.1s;
+  padding-left: 2rem;
+}
+
+.msg:hover {
+  background-color: rgb(45,45,45);
+}
+
+.sender {
+  font-weight: bold;
+}
+
+.timestamp {
+  font-size: 0.6rem;
+}
+
+.send-message {
+  background-color: rgb(55, 55, 55);
+  padding-left: 2rem;
+}
+
+.send-message form {
+  width: 70%;
+  height: 60%;
+}
+
+.send-message form .icon {
+  position: absolute;
+  right: 0.5rem;
+}
+
+#send-msg {
+  background-color: rgb(69, 69, 69);
+  border: none;
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+
+  outline: none;
+
+  padding: 0.6rem;
+  font-size: 0.9rem;
+}
+
+#send-msg:focus-visible {
+  outline: 2px solid var(--grey);
+  outline-offset: 4px;
+}
