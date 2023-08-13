@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import socket from "../helpers/socket";
 
-export default function ChatList({ uid, email, username, token, setChat }) {
+export default function ChatList({ uid, email, username, token, setChat, setMessages }) {
   const [chats, setChats] = useState();
   const [friendUsername, setFriendUsername] = useState("");
   const [groupName, setGroupName] = useState("");
@@ -57,7 +58,9 @@ export default function ChatList({ uid, email, username, token, setChat }) {
         chat = chat.data;
       }
 
-      setChat({chat, messages: messages.data});
+      setChat(chat);
+      socket.emit("join-chat", chatId);
+      setMessages(messages.data);
     } catch (error) {
       console.log(error);
     }
@@ -152,7 +155,14 @@ export default function ChatList({ uid, email, username, token, setChat }) {
       {chats &&
         <div className="flex-col people">
           {chats.map((ch) =>
-            <button key={ch._id} type="submit" onClick={() => getChat(ch._id)} className="flex align-start">
+            <button 
+              key={ch._id} 
+              type="submit" 
+              onClick={(e) => {
+                getChat(ch._id);
+                e.target.classList.remove("bold");
+              }} 
+              className="flex align-start gap-8" id={ch._id}>
               {ch.chatName}
             </button>
           )}

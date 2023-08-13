@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require("cors");
 const http = require("http");
+const { Server } = require("socket.io");
+const { instrument } = require("@socket.io/admin-ui");
 
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+
+const server = http.createServer(app);
 
 const port = process.env.PORT || 5000;
 
@@ -13,13 +17,6 @@ const connectDB = require("./config/connect");
 connectDB();
 
 require("./config/passport");
-
-const server = http.createServer(app);
-const io = require("socket.io")(server);
-
-io.on("connection", (socket) => {
-  console.log("Connected");
-})
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -34,6 +31,34 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(port, () => {
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:5173", "https://admin.socket.io"],
+    credentials: true
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log("Client connected");
+
+  socket.on("join-chat", (room) => {
+    socket.join(room);
+    console.log(`User joined chat ${room}`);
+  });
+
+  socket.on("new-message", (message) => {
+    console.log("Sending message...");
+    socket.to(message.chat).emit("receive-message", message);
+  });
+});
+
+instrument(io, {
+  auth: false,
+  mode: "development",
+});
+
+server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+

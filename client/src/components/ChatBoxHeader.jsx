@@ -5,7 +5,6 @@ import usersIcon from "../assets/images/users.svg";
 import Icon from "./Icon";
 
 export default function ChatBoxHeader({chat}) {
-  console.log(chat);
   return (
     <div className="flex justify-between align-center chat-header">
       <h3>{chat.chatName}</h3>

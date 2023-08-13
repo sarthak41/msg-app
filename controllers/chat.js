@@ -1,15 +1,52 @@
 const Message = require("../models/message");
 const Chat = require("../models/chat");
 const User = require("../models/user");
+// const mongoose = require("mongoose");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.chatList = async (req, res) => {
   try {
     const user = req.user;
-
-    let chats = await Chat.find(
-      {members: user._id}
-    ).populate("members", "-password")
-    .populate("latestMessage");
+    
+    let chats = await Chat.aggregate([
+      {
+        $match: {members: new ObjectId(user._id)}
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "members",
+          foreignField: "_id",
+          as: "members"
+        }
+      },
+      {
+        $project: {
+          members: {
+            password: 0
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "messages",
+          localField: "latestMessage",
+          foreignField: "_id",
+          as: "latestMessage"
+        }
+      },
+      {
+        $unwind: {
+          path: "$latestMessage",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $sort: {
+          "latestMessage.createdAt" : -1
+        }
+      }
+    ]);
   
     return res.status(200).json(chats);
   } catch (error) {

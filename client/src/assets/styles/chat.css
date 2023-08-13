@@ -43,7 +43,7 @@
 }
 
 .chat-box-overlay {
-  grid-template-rows: 1fr 10fr 1fr;
+  grid-template-rows: auto calc(100vh - 150px) auto;
 }
 
 .chat-box-overlay * {
@@ -76,9 +76,14 @@
 
 .messages {
   background-color: rgb(55, 55, 55);
-  /* padding-left: 2rem; */
-  padding-top: 0.5rem;
+  padding-bottom: 2rem;
   border-bottom: 4px solid rgba(40, 40, 40, 0.3);
+  overflow-y: scroll;
+
+  overflow-anchor: auto;
+
+  /* display: flex;
+  flex-direction: column-reverse; */
 }
 
 .msg {
@@ -89,6 +94,10 @@
 
 .msg:hover {
   background-color: rgb(45,45,45);
+}
+
+.msg:has(.sender) {
+  margin-top: 0.8rem;
 }
 
 .sender {

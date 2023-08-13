@@ -1,11 +1,16 @@
 import PropTypes from "prop-types";
 import Msg from "./Msg";
+import { useEffect } from "react";
 
 export default function Messages({messages}) {
-  console.log(messages);
+  useEffect(()=>{
+    const msgs = document.querySelector(".messages");
+    msgs.scrollTop = msgs.scrollHeight;
+  }, [messages]);
+
   return (
     messages &&
-    <div className="messages flex-col gap-4">
+    <div className="messages">
       {messages.map((m, ind) =>
         <Msg 
           key={m._id} 

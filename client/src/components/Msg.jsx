@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 export default function Msg({username, content, timestamp, lastSender}) {
   const timeString = formatTimestamp(timestamp);
-  console.log(lastSender);
   return (
     <div className="msg flex-col">
       {(lastSender !== username) &&
