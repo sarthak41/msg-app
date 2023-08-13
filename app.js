@@ -50,6 +50,14 @@ io.on("connection", (socket) => {
     console.log("Sending message...");
     socket.to(message.chat).emit("receive-message", message);
   });
+
+  socket.on("typing", (username, chatId) => {
+    socket.to(chatId).emit("is-typing", username, chatId);
+  })
+
+  socket.on("stop-typing", (username, chatId) => {
+    socket.to(chatId).emit("isnt-typing", username, chatId);
+  })
 });
 
 instrument(io, {

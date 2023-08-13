@@ -18,13 +18,41 @@
 
 .people button {
   position: relative;
-  padding: 0.8rem;
+  padding: 0.8rem 1.2rem;
   background-color: rgb(50,50,50);
 
   border: none;
   border-radius: 4px;
 
   transition: 0.1s;
+}
+
+.unread::before {
+  content: "";
+  height: 8px;
+  width: 5px;
+  background-color: white;
+  border-radius: 0 6px 6px 0;
+
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  transition: 0.2s;
+}
+
+.unread:hover::before {
+  content: "";
+  height: 18px;
+  width: 5px;
+  background-color: white;
+  border-radius: 0 6px 6px 0;
+
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .people button::after {
@@ -74,16 +102,19 @@
   filter: invert(1);
 }
 
-.messages {
+.message-box {
   background-color: rgb(55, 55, 55);
-  padding-bottom: 2rem;
+  /* padding-bottom: 2rem;
   border-bottom: 4px solid rgba(40, 40, 40, 0.3);
-  overflow-y: scroll;
+  overflow-y: scroll; */
 
   overflow-anchor: auto;
 
-  /* display: flex;
-  flex-direction: column-reverse; */
+  grid-template-rows: auto 1fr;
+}
+
+.messages {
+  overflow-y: scroll; */
 }
 
 .msg {
@@ -97,7 +128,7 @@
 }
 
 .msg:has(.sender) {
-  margin-top: 0.8rem;
+  margin-top: 1.2rem;
 }
 
 .sender {
@@ -106,6 +137,50 @@
 
 .timestamp {
   font-size: 0.6rem;
+}
+
+.typing-indicator {
+  min-height: 30px;
+  padding: 0.5rem 2rem;
+  border-bottom: 4px solid rgba(40, 40, 40, 0.3);
+}
+
+.dot {
+  height: 8px;
+  width: 8px;
+  background-color: var(--grey);
+
+  border-radius: 50%;
+
+  animation: typing 1.5s infinite;
+}
+
+.dot1 {
+  animation-delay: 0s;
+}
+
+.dot2 {
+  animation-delay: 0.5s;
+}
+
+.dot3 {
+  animation-delay: 1s;
+}
+
+@keyframes typing {
+  0%, 100% {
+    background-color: var(--grey)
+  }
+  25% {
+    background-color: #fff; 
+  }
+  50% {
+    background-color: #fff;
+    scale: 1.2;
+  }
+  75% {
+    background-color: var(--grey);
+  }
 }
 
 .send-message {
