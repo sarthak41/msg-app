@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
@@ -10,8 +10,6 @@ function App() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("userToken"))
   );
-
-  console.log(user);
 
   return (
     <BrowserRouter>
@@ -28,6 +26,9 @@ function App() {
                 email={user.email}
                 username={user.username}
                 token={user.token}
+                color={user.color}
+                bio={user.bio}
+                setUser={setUser}
               />
             ) : (
               <Navigate to="/login" replace={true} />

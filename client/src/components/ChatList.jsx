@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import socket from "../helpers/socket";
+import Icon from "./Icon";
+import userSettingsIcon from "../assets/images/settings-filled.svg";
 
 export default function ChatList({
   uid,
@@ -10,6 +12,7 @@ export default function ChatList({
   token,
   setChat,
   setMessages,
+  setShowUserModal,
 }) {
   const [chats, setChats] = useState();
   const [friendUsername, setFriendUsername] = useState("");
@@ -128,105 +131,115 @@ export default function ChatList({
   };
 
   return (
-    <div className="chat-list flex-col gap-8">
-      <button
-        type="button"
-        onClick={() =>
-          document.querySelector(".new-dm").classList.remove("hidden")
-        }
-        className="btn-submit"
-      >
-        New DM
-      </button>
-      <form className="flex-col gap-16 hidden new-dm">
-        <div className="input flex-col gap-4">
-          <div className="flex justify-between align-center">
-            <label htmlFor="email" className="required flex gap-4">
-              {"Friend's username"} <div className="error">{errMsg}</div>
-            </label>
-            <button
-              onClick={() => {
-                document.querySelector(".new-dm").classList.add("hidden");
-                setFriendUsername("");
-                setErrMsg("");
+    <div className="chat-list flex-col justify-between">
+      <div className="flex-col gap-8">
+        <button
+          type="button"
+          onClick={() =>
+            document.querySelector(".new-dm").classList.remove("hidden")
+          }
+          className="btn-submit"
+        >
+          New DM
+        </button>
+        <form className="flex-col gap-16 hidden new-dm">
+          <div className="input flex-col gap-4">
+            <div className="flex justify-between align-center">
+              <label htmlFor="email" className="required flex gap-4">
+                {"Friend's username"} <div className="error">{errMsg}</div>
+              </label>
+              <button
+                onClick={() => {
+                  document.querySelector(".new-dm").classList.add("hidden");
+                  setFriendUsername("");
+                  setErrMsg("");
+                }}
+              >
+                X
+              </button>
+            </div>
+            <input
+              type="text"
+              id="friend-username"
+              name="friend-username"
+              value={friendUsername}
+              onChange={(e) => {
+                setFriendUsername(e.target.value);
               }}
-            >
-              X
+              required
+            />
+            <button onClick={createNewChat} className="btn-submit">
+              Create
             </button>
           </div>
-          <input
-            type="text"
-            id="friend-username"
-            name="friend-username"
-            value={friendUsername}
-            onChange={(e) => {
-              setFriendUsername(e.target.value);
-            }}
-            required
-          />
-          <button onClick={createNewChat} className="btn-submit">
-            Create
-          </button>
-        </div>
-      </form>
+        </form>
+        <button
+          type="button"
+          onClick={() =>
+            document.querySelector(".new-group").classList.remove("hidden")
+          }
+          className="btn-submit green-btn"
+        >
+          New Group
+        </button>
+        <form className="flex-col gap-16 hidden new-group">
+          <div className="input flex-col gap-4">
+            <div className="flex justify-between align-center">
+              <label htmlFor="email" className="required flex gap-4">
+                {"Group Name"}
+              </label>
+              <button
+                onClick={() => {
+                  document.querySelector(".new-group").classList.add("hidden");
+                  setGroupName("");
+                }}
+              >
+                X
+              </button>
+            </div>
+            <input
+              type="text"
+              id="group-name"
+              name="group-name"
+              value={groupName}
+              onChange={(e) => {
+                setGroupName(e.target.value);
+              }}
+              required
+            />
+            <button onClick={createNewGroup} className="btn-submit">
+              Create
+            </button>
+          </div>
+        </form>
+        {chats && (
+          <div className="flex-col people">
+            {chats.map((ch) => (
+              <button
+                key={ch._id}
+                type="submit"
+                onClick={(e) => {
+                  getChat(ch._id);
+                  e.target.classList.remove("unread");
+                }}
+                className="flex align-start gap-8"
+                id={ch._id}
+              >
+                {ch.chatName}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
-      <button
-        type="button"
-        onClick={() =>
-          document.querySelector(".new-group").classList.remove("hidden")
-        }
-        className="btn-submit green-btn"
-      >
-        New Group
-      </button>
-      <form className="flex-col gap-16 hidden new-group">
-        <div className="input flex-col gap-4">
-          <div className="flex justify-between align-center">
-            <label htmlFor="email" className="required flex gap-4">
-              {"Group Name"}
-            </label>
-            <button
-              onClick={() => {
-                document.querySelector(".new-group").classList.add("hidden");
-                setGroupName("");
-              }}
-            >
-              X
-            </button>
-          </div>
-          <input
-            type="text"
-            id="group-name"
-            name="group-name"
-            value={groupName}
-            onChange={(e) => {
-              setGroupName(e.target.value);
-            }}
-            required
-          />
-          <button onClick={createNewGroup} className="btn-submit">
-            Create
-          </button>
-        </div>
-      </form>
-      {chats && (
-        <div className="flex-col people">
-          {chats.map((ch) => (
-            <button
-              key={ch._id}
-              type="submit"
-              onClick={(e) => {
-                getChat(ch._id);
-                e.target.classList.remove("unread");
-              }}
-              className="flex align-start gap-8"
-              id={ch._id}
-            >
-              {ch.chatName}
-            </button>
-          ))}
-        </div>
-      )}
+      <div className="user-settings flex justify-between align-center">
+        <div>{username}</div>
+        <Icon
+          src={userSettingsIcon}
+          alt="User Settings"
+          onClick={() => setShowUserModal(true)}
+        />
+      </div>
     </div>
   );
 }

@@ -47,7 +47,7 @@ exports.login = async (req, res, next) => {
         process.env.JWT_SECRET, 
         {expiresIn: "3d"}, (err, token) => {
           if (err) return next(err);
-          return res.status(200).json({_id: user._id, email: user.email, username: user.username, color: user.color, token});
+          return res.status(200).json({_id: user._id, email: user.email, username: user.username, color: user.color, token, bio: user.bio});
       });
     });
   })(req, res, next);
@@ -56,8 +56,9 @@ exports.login = async (req, res, next) => {
 exports.setBio = async (req, res, next) => {
   try {
     const {bio} = req.body;
+    console.log(bio);
 
-    const user = await User.findByIdAndUpdate(req.user._id, { bio }, {new: true});
+    const user = await User.findByIdAndUpdate(req.user._id, { bio }, { new: true });
 
     return res.status(200).json(user);
   } catch (error) {
@@ -69,7 +70,7 @@ exports.setColor = async (req, res, next) => {
   try {
     const {color} = req.params;
 
-    const user = await User.findByIdAndUpdate(req.user._id, { color }, {new: true});
+    const user = await User.findByIdAndUpdate(req.user._id, { color }, { new: true });
 
     return res.status(200).json(user);
   } catch (error) {

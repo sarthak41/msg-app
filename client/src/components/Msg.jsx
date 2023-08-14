@@ -1,7 +1,7 @@
 import formatTimestamp from "../helpers/formatTimestamp";
 import PropTypes from "prop-types";
 import Icon from "./Icon";
-import editIcon from "../assets/images/edit.svg";
+import editIcon from "../assets/images/edit-filled.svg";
 import axios from "axios";
 import { useState } from "react";
 import socket from "../helpers/socket";
