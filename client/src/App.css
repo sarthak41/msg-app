@@ -8,6 +8,11 @@
   --red: rgb(240, 71, 71);
   --green: rgb(67, 181, 129);
   --green-2: rgb(50, 165, 115);
+  --orange: rgb(250,166,26);
+  --pink: rgb(255,115,250);
+  --yellow: rgb(252,255,152);
+  --black: rgb(0,0,0);
+  --white: rgb(230,230,230);
 }
 
 *, *::before, *::after {

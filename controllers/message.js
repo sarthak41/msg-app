@@ -17,7 +17,7 @@ exports.sendMessage = async (req, res) => {
       chat: chatId
     });
 
-    const populatedMsg = await msg.populate("sender", "username");
+    const populatedMsg = await msg.populate("sender", "username color");
   
     await Chat.findByIdAndUpdate(chatId, {latestMessage: msg._id}, {new: true});
     return res.status(200).json(populatedMsg);
@@ -34,7 +34,9 @@ exports.editMessage = async (req, res) => {
 
     const msg = await Message.findByIdAndUpdate(messageId, {content: content}, {new: true});
 
-    return res.status(200).json(msg);
+    const populatedMsg = await msg.populate("sender", "username color");
+
+    return res.status(200).json(populatedMsg);
   } catch (error) {
     console.log(error);
     return res.status(500).json({message: "Server error"});
@@ -46,7 +48,7 @@ exports.getMessages = async (req, res) => {
     const {chatId} = req.params;
 
     const messages = await Message.find({chat: chatId})
-      .populate("sender", "username")
+      .populate("sender", "username color")
       .sort({createdAt: 1})
 
     return res.status(200).json(messages);

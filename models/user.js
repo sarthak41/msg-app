@@ -19,6 +19,11 @@ const userSchema = new Schema({
 	bio: {
 		type: String,
 		maxLength: 1000
+	},
+	color: {
+		type: String,
+		maxLength: 20,
+		default: "white"
 	}
 });
 

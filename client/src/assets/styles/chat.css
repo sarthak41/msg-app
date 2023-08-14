@@ -89,11 +89,13 @@
   padding: 0.3rem;
   background-color: inherit;
   border: none;
+  height: 36px;
+  width: 36px;
 }
 
 .icon>img {
-  height: 27px;
-  width: 27px;
+  height: 100%;
+  width: 100%;
   filter: invert(0.7);
   transition: 0.2s;
 }
@@ -121,6 +123,7 @@
   width: 100%;
   transition: 0.1s;
   padding-left: 2rem;
+  position: relative;
 }
 
 .msg:hover {
@@ -137,6 +140,26 @@
 
 .timestamp {
   font-size: 0.6rem;
+}
+
+.msg .icon {
+  display: none;
+  transform: scale(0.7) translate(-50%,-50%);
+  position: absolute;
+  top: 0;
+  right: 30px;
+  border-radius: 8px;
+  background-color: rgb(55, 55, 55);
+  box-shadow: 0 4px 10px 2px rgba(0,0,0,0.3);
+}
+
+.msg:hover .icon {
+  display: block;
+}
+
+.msg input {
+  margin: 0.5rem 0;
+  border-radius: 6px;
 }
 
 .typing-indicator {

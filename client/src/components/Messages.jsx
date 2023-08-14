@@ -2,7 +2,16 @@ import PropTypes from "prop-types";
 import Msg from "./Msg";
 import { useEffect } from "react";
 
-export default function Messages({ messages, isTyping, typers, username }) {
+export default function Messages({
+  messages,
+  isTyping,
+  typers,
+  username,
+  token,
+  setMessages,
+}) {
+  console.log(messages);
+
   useEffect(() => {
     const msgs = document.querySelector(".messages");
     msgs.scrollTop = msgs.scrollHeight;
@@ -14,11 +23,17 @@ export default function Messages({ messages, isTyping, typers, username }) {
         <div className="messages">
           {messages.map((m, ind) => (
             <Msg
+              chatId={m.chat}
               key={m._id}
-              username={m.sender.username}
+              msgId={m._id}
+              sender={m.sender.username}
+              username={username}
+              color={m.sender.color}
               timestamp={m.createdAt}
               content={m.content}
-              lastSender={ind >= 1 ? messages[ind - 1].sender.username : ""}
+              lastMessage={ind >= 1 ? messages[ind - 1] : null}
+              token={token}
+              setMessages={setMessages}
             />
           ))}
         </div>

@@ -22,6 +22,17 @@ export default function ChatBox({
       else document.getElementById(newMsg.chat).classList.add("unread");
     });
 
+    socket.on("receive-edited-message", (newMsg) => {
+      if (newMsg.chat === chat._id) {
+        setMessages((prevMsgs) => {
+          const newMsgs = prevMsgs.map((msg) =>
+            msg._id === newMsg._id ? newMsg : msg
+          );
+          return newMsgs;
+        });
+      }
+    });
+
     socket.on("is-typing", (typer, chatId) => {
       if (chatId === chat._id) {
         setTypers((prevTypers) => {
@@ -43,6 +54,7 @@ export default function ChatBox({
     return () => {
       socket.off("receive-message");
       socket.off("is-typing");
+      socket.off("isnt-typing");
     };
   }, [chat]);
 
@@ -55,6 +67,8 @@ export default function ChatBox({
           isTyping={isTyping}
           typers={typers}
           username={username}
+          token={token}
+          setMessages={setMessages}
         />
         <SendMessage
           chatId={chat._id}

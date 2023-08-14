@@ -51,6 +51,10 @@ io.on("connection", (socket) => {
     socket.to(message.chat).emit("receive-message", message);
   });
 
+  socket.on("edit-message", (message) => {
+    socket.to(message.chat).emit("receive-edited-message", message);
+  })
+
   socket.on("typing", (username, chatId) => {
     socket.to(chatId).emit("is-typing", username, chatId);
   })

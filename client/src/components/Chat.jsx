@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ChatBox from "./ChatBox";
 import "../assets/styles/chat.css";
 
-export default function Chat({ _id, email, username, token }) {
+export default function Chat({ _id, email, username, color, token }) {
   const [chat, setChat] = useState({});
   const [messages, setMessages] = useState([]);
 
@@ -22,6 +22,7 @@ export default function Chat({ _id, email, username, token }) {
         username={username}
         chat={chat}
         messages={messages}
+        color={color}
         setMessages={setMessages}
         token={token}
       />

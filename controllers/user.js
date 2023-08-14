@@ -2,6 +2,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const user = require("../models/user");
 require("dotenv").config();
 
 exports.signUp = async (req, res, next) => {
@@ -46,11 +47,35 @@ exports.login = async (req, res, next) => {
         process.env.JWT_SECRET, 
         {expiresIn: "3d"}, (err, token) => {
           if (err) return next(err);
-          return res.status(200).json({_id: user._id, email: user.email, username: user.username, token});
+          return res.status(200).json({_id: user._id, email: user.email, username: user.username, color: user.color, token});
       });
     });
   })(req, res, next);
 };
+
+exports.setBio = async (req, res, next) => {
+  try {
+    const {bio} = req.body;
+
+    const user = await User.findByIdAndUpdate(req.user._id, { bio }, {new: true});
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+exports.setColor = async (req, res, next) => {
+  try {
+    const {color} = req.params;
+
+    const user = await User.findByIdAndUpdate(req.user._id, { color }, {new: true});
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 exports.verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
