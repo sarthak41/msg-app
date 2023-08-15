@@ -12,6 +12,7 @@ export default function ChatBox({
   token,
   username,
   setShowGroupModal,
+  setShowSideBar,
 }) {
   const [isTyping, setIsTyping] = useState(false);
   const [typers, setTypers] = useState([]);
@@ -64,8 +65,8 @@ export default function ChatBox({
       <div className="chat-box-overlay grid">
         <ChatBoxHeader
           chat={chat}
-          token={token}
           setShowGroupModal={setShowGroupModal}
+          setShowSideBar={setShowSideBar}
         />
         <Messages
           messages={messages}
@@ -81,7 +82,6 @@ export default function ChatBox({
           username={username}
           token={token}
           setMessages={setMessages}
-          setIsTyping={setIsTyping}
         />
       </div>
     )
@@ -90,4 +90,10 @@ export default function ChatBox({
 
 ChatBox.propTypes = {
   chat: PropTypes.object,
+  messages: PropTypes.array,
+  setMessages: PropTypes.func,
+  token: PropTypes.string,
+  username: PropTypes.string,
+  setShowGroupModal: PropTypes.func,
+  setShowSideBar: PropTypes.func,
 };

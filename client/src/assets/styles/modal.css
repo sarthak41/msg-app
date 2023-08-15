@@ -69,3 +69,12 @@
 .member:hover {
   background-color: rgb(65,65,65);
 }
+
+.member .avatar-container {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.user-info {
+  padding-left: 3rem;
+}

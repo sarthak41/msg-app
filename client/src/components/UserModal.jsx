@@ -3,6 +3,7 @@ import "../assets/styles/modal.css";
 import axios from "axios";
 import Icon from "./Icon";
 import closeIcon from "../assets/images/close.svg";
+import PropTypes from "prop-types";
 
 export default function UserModal({
   token,
@@ -13,11 +14,57 @@ export default function UserModal({
 }) {
   const [bio, setBio] = useState(originalBio);
   const [color, setColor] = useState(originalColor);
+  const [image, setImage] = useState();
 
   const handleSubmit = async (e) => {
     try {
       console.log(bio, color);
       e.preventDefault();
+
+      if (
+        image !== undefined &&
+        (image.type === "image/jpeg" || image.type === "image/png")
+      ) {
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "chat-app");
+        data.append("cloud_name", import.meta.env.VITE_CLOUDNAME);
+
+        const cloud_res = await fetch(import.meta.env.VITE_CLOUDINARY, {
+          method: "post",
+          body: data,
+        });
+
+        const cloud_data = await cloud_res.json();
+        console.log(cloud_data);
+
+        const res = await axios.patch(
+          `${import.meta.env.VITE_API_ROUTE}/users/pfp`,
+          {
+            profilePicture: cloud_data.secure_url,
+            pfpId: cloud_data.public_id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const userToken = {
+          _id: res.data._id,
+          username: res.data.username,
+          email: res.data.email,
+          color: res.data.color,
+          bio: res.data.bio,
+          profilePicture: res.data.profilePicture,
+          token,
+        };
+
+        localStorage.setItem("userToken", JSON.stringify(userToken));
+        setImage(undefined);
+      }
+
       if (bio !== originalBio) {
         const res = await axios.patch(
           `${import.meta.env.VITE_API_ROUTE}/users/bio`,
@@ -35,6 +82,7 @@ export default function UserModal({
           email: res.data.email,
           color: res.data.color,
           bio: res.data.bio,
+          profilePicture: res.data.profilePicture,
           token,
         };
 
@@ -59,6 +107,7 @@ export default function UserModal({
           email: res.data.email,
           color: res.data.color,
           bio: res.data.bio,
+          profilePicture: res.data.profilePicture,
           token,
         };
 
@@ -92,6 +141,15 @@ export default function UserModal({
           onClick={() => setShowUserModal(false)}
         />
         <form onSubmit={handleSubmit} className="flex-col gap-16">
+          <div className="input flex-col gap-4">
+            <label htmlFor="image">Profile Picture</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+          </div>
           <div className="input flex-col gap-4">
             <label htmlFor="bio" className="flex gap-4">
               Bio
@@ -131,3 +189,11 @@ export default function UserModal({
     </div>
   );
 }
+
+UserModal.propTypes = {
+  originalBio: PropTypes.string,
+  setShowUserModal: PropTypes.func,
+  token: PropTypes.string,
+  originalColor: PropTypes.string,
+  setUser: PropTypes.func,
+};

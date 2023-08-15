@@ -4,6 +4,7 @@ import "../assets/styles/modal.css";
 import { useState } from "react";
 import axios from "axios";
 import removeIcon from "../assets/images/remove-circle-outline.svg";
+import PropTypes from "prop-types";
 
 export default function GroupModal({
   userId,
@@ -88,13 +89,22 @@ export default function GroupModal({
           <div className="members flex-col gap-4">
             <h2>Members</h2>
             {chat.members.map((mem) => (
-              <div
-                key={mem._id}
-                className="member"
-                style={{ color: `var(--${mem.color})`, fontWeight: 700 }}
-              >
-                {mem.username}
-                {mem.bio && <div style={{ fontWeight: 400 }}>{mem.bio}</div>}
+              <div key={mem._id} className="member">
+                <div className="avatar-container">
+                  <img
+                    src={mem.profilePicture}
+                    alt="User avatar"
+                    className="avatar"
+                  />
+                </div>
+                <div className="user-info">
+                  <div
+                    style={{ color: `var(--${mem.color})`, fontWeight: 700 }}
+                  >
+                    {mem.username}
+                  </div>
+                  {mem.bio && <div style={{ fontWeight: 400 }}>{mem.bio}</div>}
+                </div>
                 {userId === chat.admin && (
                   <Icon
                     src={removeIcon}
@@ -120,3 +130,12 @@ export default function GroupModal({
     )
   );
 }
+
+GroupModal.propTypes = {
+  userId: PropTypes.string,
+  chat: PropTypes.object,
+  token: PropTypes.string,
+  setChat: PropTypes.func,
+  setChats: PropTypes.func,
+  setShowUserModal: PropTypes.func,
+};

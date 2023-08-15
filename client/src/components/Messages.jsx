@@ -29,6 +29,7 @@ export default function Messages({
               sender={m.sender.username}
               username={username}
               color={m.sender.color}
+              pfp={m.sender.profilePicture}
               timestamp={m.createdAt}
               content={m.content}
               lastMessage={ind >= 1 ? messages[ind - 1] : null}
@@ -61,4 +62,8 @@ export default function Messages({
 Messages.propTypes = {
   messages: PropTypes.array,
   typers: PropTypes.array,
+  isTyping: PropTypes.bool,
+  username: PropTypes.string,
+  token: PropTypes.string,
+  setMessages: PropTypes.func,
 };

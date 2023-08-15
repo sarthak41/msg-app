@@ -3,13 +3,13 @@ import Icon from "./Icon";
 import sendIcon from "../assets/images/send.svg";
 import axios from "axios";
 import socket from "../helpers/socket";
+import PropTypes from "prop-types";
 
 export default function SendMessage({
   chatId,
   messages,
   setMessages,
   token,
-  setIsTyping,
   username,
 }) {
   const [content, setContent] = useState("");
@@ -54,7 +54,7 @@ export default function SendMessage({
   };
 
   const handleTyping = (e) => {
-    const text = e.target.value.trim();
+    const text = e.target.value;
     setContent(text);
 
     const startTime = new Date().getTime();
@@ -91,3 +91,11 @@ export default function SendMessage({
     </div>
   );
 }
+
+SendMessage.propTypes = {
+  chatId: PropTypes.string,
+  messages: PropTypes.array,
+  setMessages: PropTypes.func,
+  token: PropTypes.string,
+  username: PropTypes.string,
+};

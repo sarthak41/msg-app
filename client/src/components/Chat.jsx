@@ -12,6 +12,7 @@ export default function Chat({
   username,
   color,
   bio,
+  pfp,
   token,
   setUser,
 }) {
@@ -20,6 +21,16 @@ export default function Chat({
   const [messages, setMessages] = useState([]);
   const [showUserModal, setShowUserModal] = useState(false);
   const [showGroupModal, setShowGroupModal] = useState(false);
+  const [showSidebar, setShowSideBar] = useState(true);
+
+  useEffect(() => {
+    const list = document.querySelector(".chat-list");
+
+    if (showSidebar) {
+      list.classList.remove("slide-out");
+      list.classList.add("slide-in");
+    }
+  }, [showSidebar]);
 
   return (
     <>
@@ -28,12 +39,15 @@ export default function Chat({
           _id={_id}
           email={email}
           username={username}
+          pfp={pfp}
           token={token}
           setChat={setChat}
           setMessages={setMessages}
           setShowUserModal={setShowUserModal}
           chats={chats}
           setChats={setChats}
+          showSidebar={showSidebar}
+          setShowSideBar={setShowSideBar}
         />
         <ChatBox
           username={username}
@@ -43,6 +57,8 @@ export default function Chat({
           setMessages={setMessages}
           token={token}
           setShowGroupModal={setShowGroupModal}
+          showSidebar={showSidebar}
+          setShowSideBar={setShowSideBar}
         />
       </div>
       {showUserModal && (
@@ -73,4 +89,8 @@ Chat.propTypes = {
   email: PropTypes.string,
   username: PropTypes.string,
   token: PropTypes.string,
+  color: PropTypes.string,
+  bio: PropTypes.string,
+  pfp: PropTypes.string,
+  setUser: PropTypes.func,
 };

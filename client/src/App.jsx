@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
@@ -28,6 +28,7 @@ function App() {
                 token={user.token}
                 color={user.color}
                 bio={user.bio}
+                pfp={user.profilePicture}
                 setUser={setUser}
               />
             ) : (

@@ -24,6 +24,13 @@ const userSchema = new Schema({
 		type: String,
 		maxLength: 20,
 		default: "white"
+	},
+	profilePicture: {
+		type: String,
+		default: "https://i0.wp.com/upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+	},
+	pfpId: {
+		type: String
 	}
 });
 

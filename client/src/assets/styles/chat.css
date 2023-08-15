@@ -1,10 +1,10 @@
 .chat {
-  grid-template-columns: 1fr 5fr;
+  grid-template-columns: 1.2fr 5fr;
 }
 
 .chat-list {
   padding: 0.5rem;
-  background-color: rgb(50,50,50);
+  background-color: rgb(50, 50, 50);
   border-right: 4px solid rgba(40, 40, 40, 0.3);
 }
 
@@ -12,14 +12,15 @@
   background-color: var(--green);
 }
 
-.green-btn:hover {
-  box-shadow: inset 20em 0 0 0 var(--green-2);
+.green-btn:hover,
+.green-btn:focus {
+  box-shadow: inset 30rem 0 0 0 var(--green-2);
 }
 
 .people button {
   position: relative;
   padding: 0.8rem 1.2rem;
-  background-color: rgb(50,50,50);
+  background-color: rgb(50, 50, 50);
 
   border: none;
   border-radius: 4px;
@@ -71,12 +72,20 @@
 }
 
 .user-settings {
-  background-color: rgb(40,40,40);
+  background-color: rgb(40, 40, 40);
   padding: 0.5rem;
+  padding-left: 2.5rem;
   border-radius: 6px;
 }
 
+.user-settings .icon {
+  height: 26px;
+  width: 26px;
+}
+
 .chat-box-overlay {
+  width: 100%;
+  height: 100%;
   grid-template-rows: auto calc(100vh - 150px) auto;
 }
 
@@ -99,14 +108,14 @@
   width: 36px;
 }
 
-.icon>img {
+.icon > img {
   height: 100%;
   width: 100%;
   filter: invert(0.7);
   transition: 0.2s;
 }
 
-.icon>img:hover {
+.icon > img:hover {
   filter: invert(1);
 }
 
@@ -128,12 +137,15 @@
 .msg {
   width: 100%;
   transition: 0.1s;
-  padding-left: 2rem;
   position: relative;
 }
 
+.msg > :is(div, form) {
+  padding-left: 3.5rem;
+}
+
 .msg:hover {
-  background-color: rgb(45,45,45);
+  background-color: rgb(45, 45, 45);
 }
 
 .msg:has(.sender) {
@@ -148,15 +160,37 @@
   font-size: 0.6rem;
 }
 
+.avatar-container {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  position: absolute;
+  left: 0.5rem;
+  top: 0.2rem;
+}
+
+.avatar {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.user-settings .avatar-container {
+  height: 24px;
+  width: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .msg .icon {
   display: none;
-  transform: scale(0.7) translate(-50%,-50%);
+  transform: scale(0.7) translate(-50%, -50%);
   position: absolute;
   top: 0;
   right: 30px;
   border-radius: 8px;
   background-color: rgb(55, 55, 55);
-  box-shadow: 0 4px 10px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.3);
 }
 
 .msg:hover .icon {
@@ -197,11 +231,12 @@
 }
 
 @keyframes typing {
-  0%, 100% {
-    background-color: var(--grey)
+  0%,
+  100% {
+    background-color: var(--grey);
   }
   25% {
-    background-color: #fff; 
+    background-color: #fff;
   }
   50% {
     background-color: #fff;
@@ -246,4 +281,63 @@
 #send-msg:focus-visible {
   outline: 2px solid var(--grey);
   outline-offset: 4px;
+}
+
+@media screen and (max-width: 600px) {
+  .chat {
+    display: block;
+  }
+
+  @keyframes slide-in {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+
+  .chat-list {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    height: 100%;
+    width: 80%;
+    transition: 0.3s ease-in;
+    animation: slide-in 400ms;
+  }
+
+  .slide-in {
+    animation: slide-in 400ms;
+  }
+
+  .slide-out {
+    animation: slide-out 400ms;
+  }
+
+  .chat-box-overlay {
+    width: 100%;
+    height: 100%;
+  }
+
+  .send-message {
+    width: 100%;
+  }
+
+  .send-message form {
+    width: 90%;
+  }
 }

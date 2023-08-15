@@ -4,6 +4,14 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const user = require("../models/user");
 require("dotenv").config();
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  secure: true,
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 exports.signUp = async (req, res, next) => {
   try {
@@ -47,7 +55,7 @@ exports.login = async (req, res, next) => {
         process.env.JWT_SECRET, 
         {expiresIn: "3d"}, (err, token) => {
           if (err) return next(err);
-          return res.status(200).json({_id: user._id, email: user.email, username: user.username, color: user.color, token, bio: user.bio});
+          return res.status(200).json({_id: user._id, email: user.email, username: user.username, color: user.color, bio: user.bio, profilePicture: user.profilePicture, token});
       });
     });
   })(req, res, next);
@@ -75,6 +83,23 @@ exports.setColor = async (req, res, next) => {
     return res.status(200).json(user);
   } catch (error) {
     console.log(error);
+  }
+}
+
+exports.setProfilePicture = async (req, res, next) => {
+  try {
+    let origPfpId = await User.findById(req.user._id);
+    origPfpId = origPfpId.pfpId;
+
+    const {profilePicture, pfpId} = req.body;
+
+    const user = await User.findByIdAndUpdate(req.user._id, {profilePicture, pfpId}, {new: true});
+
+    cloudinary.uploader.destroy(origPfpId).then((res)=>console.log(res));
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error)
   }
 }
 

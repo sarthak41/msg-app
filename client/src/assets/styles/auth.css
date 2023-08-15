@@ -34,12 +34,12 @@
   border: none;
   border-radius: 4px;
   padding: 0.5rem;
-  transition: 600ms;
+  transition: 1500ms;
 }
 
 .btn-submit:hover,
 .btn-submit:focus {
-  box-shadow: inset 18rem 0 0 0 var(--blue-2);
+  box-shadow: inset 30rem 0 0 0 var(--blue-2);
 }
 
 .auth-redirect {

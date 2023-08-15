@@ -60,7 +60,7 @@ exports.getChat = async (req, res) => {
     const username = req.user.username;
     const {chatId} = req.params;
 
-    let chat = await Chat.findById(chatId).populate("members", "_id username bio color");
+    let chat = await Chat.findById(chatId).populate("members", "_id username bio color profilePicture");
 
     return res.status(200).json(chat);
   } catch (error) {
@@ -86,7 +86,8 @@ exports.createChat = async (req, res) => {
     }
 
     const chat = await Chat.create({members: [user._id, friend._id]});
-    return res.status(200).json(chat);
+    const populatedChat = await chat.populate("members", "-password");
+    return res.status(200).json(populatedChat);
   } catch (error) {
     console.log(error);
     return res.status(500).json({message: "Server error"});

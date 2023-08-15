@@ -12,6 +12,7 @@ export default function Msg({
   username,
   sender,
   color,
+  pfp,
   content,
   timestamp,
   lastMessage,
@@ -86,7 +87,10 @@ export default function Msg({
             new Date(timestamp).getTime() -
               new Date(lastMessage.createdAt).getTime() >=
               300000) && (
-            <div className="flex gap-8 justify-start align-center sender">
+            <div className="flex gap-8 justify-start align-center sender relative">
+              <div className="avatar-container">
+                <img src={pfp} alt="User avatar" className="avatar" />
+              </div>
               <div className="sender" style={{ color: `var(--${color})` }}>
                 {sender}
               </div>
@@ -102,3 +106,17 @@ export default function Msg({
     </div>
   );
 }
+
+Msg.propTypes = {
+  msgId: PropTypes.string,
+  chatId: PropTypes.string,
+  username: PropTypes.string,
+  sender: PropTypes.string,
+  color: PropTypes.string,
+  pfp: PropTypes.string,
+  content: PropTypes.string,
+  timestamp: PropTypes.string,
+  lastMessage: PropTypes.object,
+  token: PropTypes.string,
+  setMessages: PropTypes.func,
+};
