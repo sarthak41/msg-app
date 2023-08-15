@@ -4,6 +4,7 @@ import ChatList from "./ChatList";
 import ChatBox from "./ChatBox";
 import UserModal from "./UserModal";
 import "../assets/styles/chat.css";
+import GroupModal from "./GroupModal";
 
 export default function Chat({
   _id,
@@ -15,8 +16,10 @@ export default function Chat({
   setUser,
 }) {
   const [chat, setChat] = useState({});
+  const [chats, setChats] = useState([]);
   const [messages, setMessages] = useState([]);
   const [showUserModal, setShowUserModal] = useState(false);
+  const [showGroupModal, setShowGroupModal] = useState(false);
 
   return (
     <>
@@ -29,6 +32,8 @@ export default function Chat({
           setChat={setChat}
           setMessages={setMessages}
           setShowUserModal={setShowUserModal}
+          chats={chats}
+          setChats={setChats}
         />
         <ChatBox
           username={username}
@@ -37,6 +42,7 @@ export default function Chat({
           color={color}
           setMessages={setMessages}
           token={token}
+          setShowGroupModal={setShowGroupModal}
         />
       </div>
       {showUserModal && (
@@ -46,6 +52,16 @@ export default function Chat({
           originalBio={bio}
           token={token}
           setUser={setUser}
+        />
+      )}
+      {showGroupModal && (
+        <GroupModal
+          chat={chat}
+          setChat={setChat}
+          token={token}
+          setShowUserModal={setShowGroupModal}
+          setChats={setChats}
+          userId={_id}
         />
       )}
     </>

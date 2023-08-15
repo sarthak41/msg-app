@@ -13,8 +13,9 @@ export default function ChatList({
   setChat,
   setMessages,
   setShowUserModal,
+  chats,
+  setChats,
 }) {
-  const [chats, setChats] = useState();
   const [friendUsername, setFriendUsername] = useState("");
   const [groupName, setGroupName] = useState("");
   const [errMsg, setErrMsg] = useState("");

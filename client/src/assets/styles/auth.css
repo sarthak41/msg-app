@@ -10,7 +10,7 @@
   border-radius: 4px;
 }
 
-.input input {
+.input input, .input textarea {
   background-color: rgb(25, 25, 25);
   border: none;
   padding: 0.6rem;

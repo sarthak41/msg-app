@@ -14,29 +14,43 @@ export default function SendMessage({
 }) {
   const [content, setContent] = useState("");
 
-  const handleSubmit = async (e) => {
-    if (e.key === "Enter" && content.trim() !== "") {
+  const sendMessage = async (e) => {
+    try {
       e.preventDefault();
 
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_ROUTE}/chat/${chatId}/messages`,
-        {
-          content: content.trim(),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      if (content.trim() !== "") {
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_ROUTE}/chat/${chatId}/messages`,
+          {
+            content: content.trim(),
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      console.log(chatId);
+        console.log(chatId);
 
-      setMessages([...messages, res.data]);
-      socket.emit("new-message", res.data);
+        setMessages([...messages, res.data]);
+        socket.emit("new-message", res.data);
 
-      setContent("");
+        setContent("");
+      }
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  const handleKeySubmit = (e) => {
+    if (e.key === "Enter") {
+      sendMessage(e);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    sendMessage(e);
   };
 
   const handleTyping = (e) => {
@@ -61,10 +75,10 @@ export default function SendMessage({
   return (
     <div className="send-message flex justify-start align-center">
       <form
-        onKeyDown={handleSubmit}
+        onKeyDown={handleKeySubmit}
         className="relative flex justify-start align-center"
       >
-        <input
+        <textarea
           type="text"
           id="send-msg"
           name="send-msg"
@@ -72,7 +86,7 @@ export default function SendMessage({
           onChange={handleTyping}
           placeholder="Send a message"
         />
-        <Icon src={sendIcon} alt="Send message" />
+        <Icon src={sendIcon} alt="Send message" onClick={handleSubmit} />
       </form>
     </div>
   );

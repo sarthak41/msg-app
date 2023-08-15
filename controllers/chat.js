@@ -60,7 +60,7 @@ exports.getChat = async (req, res) => {
     const username = req.user.username;
     const {chatId} = req.params;
 
-    let chat = await Chat.findById(chatId).populate("members", "_id, username");
+    let chat = await Chat.findById(chatId).populate("members", "_id username bio color");
 
     return res.status(200).json(chat);
   } catch (error) {
@@ -111,14 +111,15 @@ exports.addToGroup = async (req, res) => {
   try {
     const {username} = req.body;
     const {chatId} = req.params;
-
     const person = await User.findOne({username});
     if (!person) {
       return res.status(400).json({message: "That username doesn't exist."});
     }
 
     const chat = await Chat.findByIdAndUpdate(chatId, {$addToSet: {members: person._id}}, {new: true});
-    return res.status(200).json(chat);
+    
+    const populatedChat = await chat.populate("members", "-password");
+    return res.status(200).json(populatedChat);
   } catch (error) {
     console.log(error);
     return res.status(500).json({message: "Server error"});
@@ -130,7 +131,9 @@ exports.removeFromGroup = async (req, res) => {
     const {chatId, userId} = req.params;
 
     const chat = await Chat.findByIdAndUpdate(chatId, {$pull: {members: userId}}, {new: true});
-    return res.status(200).json(chat);
+
+    const populatedChat = await chat.populate("members", "-password");
+    return res.status(200).json(populatedChat);
   } catch (error) {
     console.log(error);
     return res.status(500).json({message: "Server error"});
