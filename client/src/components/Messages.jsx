@@ -10,8 +10,6 @@ export default function Messages({
   token,
   setMessages,
 }) {
-  console.log(messages);
-
   useEffect(() => {
     const msgs = document.querySelector(".messages");
     msgs.scrollTop = msgs.scrollHeight;

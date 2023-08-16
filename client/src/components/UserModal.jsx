@@ -16,9 +16,11 @@ export default function UserModal({
   const [color, setColor] = useState(originalColor);
   const [image, setImage] = useState();
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     try {
-      console.log(bio, color);
+      setLoading(true);
       e.preventDefault();
 
       if (
@@ -36,7 +38,6 @@ export default function UserModal({
         });
 
         const cloud_data = await cloud_res.json();
-        console.log(cloud_data);
 
         const res = await axios.patch(
           `${import.meta.env.VITE_API_ROUTE}/users/pfp`,
@@ -63,6 +64,7 @@ export default function UserModal({
 
         localStorage.setItem("userToken", JSON.stringify(userToken));
         setImage(undefined);
+        setLoading(false);
       }
 
       if (bio !== originalBio) {
@@ -181,8 +183,11 @@ export default function UserModal({
               ))}
             </div>
           </div>
-          <button type="submit" className="btn-submit">
-            Save
+          <button
+            type="submit"
+            className="btn-submit flex justify-center align-center"
+          >
+            {!loading ? "Save" : <div className="spinner"></div>}
           </button>
         </form>
       </div>

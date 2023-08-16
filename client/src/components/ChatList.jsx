@@ -24,6 +24,9 @@ export default function ChatList({
 
   const [isMobile, setIsMobile] = useState(false);
 
+  const [loading1, setLoading1] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+
   useEffect(() => {
     if (window.innerWidth <= 600) setIsMobile(true);
   }, []);
@@ -48,7 +51,6 @@ export default function ChatList({
       });
 
       setChats(chats);
-      console.log(chats);
     } catch (error) {
       console.log(error);
     }
@@ -98,6 +100,7 @@ export default function ChatList({
   const createNewChat = async (e) => {
     try {
       e.preventDefault();
+      setLoading1(true);
 
       if (groupName.trim() === "") return;
 
@@ -118,6 +121,7 @@ export default function ChatList({
       document.querySelector(".new-dm").classList.add("hidden");
       setFriendUsername("");
       setErrMsg("");
+      setLoading1(false);
     } catch (error) {
       const errMsg = error.response.data.message;
       setErrMsg(errMsg);
@@ -127,6 +131,7 @@ export default function ChatList({
   const createNewGroup = async (e) => {
     try {
       e.preventDefault();
+      setLoading2(true);
 
       const res = await axios.post(
         `${import.meta.env.VITE_API_ROUTE}/chat/create/group`,
@@ -141,6 +146,7 @@ export default function ChatList({
       setChats((prevChats) => [res.data, ...prevChats]);
       document.querySelector(".new-group").classList.add("hidden");
       setGroupName("");
+      setLoading2(false);
     } catch (error) {
       console.log(error);
     }
@@ -207,8 +213,11 @@ export default function ChatList({
                   setFriendUsername(e.target.value);
                 }}
               />
-              <button onClick={createNewChat} className="btn-submit">
-                Create
+              <button
+                onClick={createNewChat}
+                className="btn-submit flex justify-center align-center"
+              >
+                {!loading1 ? "Create" : <div className="spinner"></div>}
               </button>
             </div>
           </form>
@@ -248,8 +257,11 @@ export default function ChatList({
                   setGroupName(e.target.value);
                 }}
               />
-              <button onClick={createNewGroup} className="btn-submit">
-                Create
+              <button
+                onClick={createNewGroup}
+                className="btn-submit flex justify-center align-center"
+              >
+                {!loading2 ? "Create" : <div className="spinner"></div>}
               </button>
             </div>
           </form>

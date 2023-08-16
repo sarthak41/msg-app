@@ -31,8 +31,6 @@ export default function SendMessage({
           }
         );
 
-        console.log(chatId);
-
         setMessages([...messages, res.data]);
         socket.emit("new-message", res.data);
 

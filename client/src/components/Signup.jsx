@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../assets/styles/auth.css";
 import axios from "axios";
@@ -11,19 +11,28 @@ export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const createAcc = async (e) => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const errorDivs = document.querySelectorAll("label div");
       for (const e of errorDivs) {
         e.classList.add("hidden");
       }
-      await axios.post(`${import.meta.env.VITE_API_ROUTE}/users/signup`, {email, username, password});
+      await axios.post(`${import.meta.env.VITE_API_ROUTE}/users/signup`, {
+        email,
+        username,
+        password,
+      });
+      setLoading(false);
       navigate("/login");
     } catch (error) {
-      const errorDiv = document.querySelector(`label[for=${error.response.data.type}] div`);
-      console.log(errorDiv);
+      const errorDiv = document.querySelector(
+        `label[for=${error.response.data.type}] div`
+      );
       errorDiv.classList.remove("hidden");
     }
   };
@@ -35,7 +44,9 @@ export default function Signup() {
         <div>{msg}</div>
         <form onSubmit={createAcc} className="flex-col gap-16">
           <div className="input flex-col gap-4">
-            <label htmlFor="email" className="required flex gap-4">Email <div className="hidden error"> - already in use</div></label>
+            <label htmlFor="email" className="required flex gap-4">
+              Email <div className="hidden error"> - already in use</div>
+            </label>
             <input
               type="email"
               id="email"
@@ -49,7 +60,9 @@ export default function Signup() {
             />
           </div>
           <div className="input flex-col gap-4">
-            <label htmlFor="username" className="required flex gap-4">Username <div className="hidden error"> - username taken</div></label>
+            <label htmlFor="username" className="required flex gap-4">
+              Username <div className="hidden error"> - username taken</div>
+            </label>
             <input
               type="text"
               id="username"
@@ -63,21 +76,33 @@ export default function Signup() {
             />
           </div>
           <div className="input flex-col gap-4">
-            <label htmlFor="password" className="required flex gap-4">Password</label>
+            <label htmlFor="password" className="required flex gap-4">
+              Password
+            </label>
             <input
               type="password"
               name="password"
               id="password"
               minLength={8}
               value={password}
-              onChange={(e)=>setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-      
-          <button type="submit" className="btn-submit">Register</button>
+
+          <button
+            type="submit"
+            className="btn-submit flex justify-center align-center"
+          >
+            {!loading ? "Register" : <div className="spinner"></div>}
+          </button>
         </form>
-        <div className="auth-redirect">Already have an account? <Link to="/login" className="auth-redirect">Log In</Link></div>
+        <div className="auth-redirect">
+          Already have an account?{" "}
+          <Link to="/login" className="auth-redirect">
+            Log In
+          </Link>
+        </div>
       </div>
     </div>
   );

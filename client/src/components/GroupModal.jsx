@@ -15,10 +15,12 @@ export default function GroupModal({
   setShowUserModal,
 }) {
   const [addUsername, setAddUsername] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleAddSubmit = async (e) => {
     try {
       e.preventDefault();
+      setLoading(true);
 
       const res = await axios.patch(
         `${import.meta.env.VITE_API_ROUTE}/chat/${chat._id}/members`,
@@ -31,6 +33,7 @@ export default function GroupModal({
       );
 
       setChat(res.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -56,7 +59,6 @@ export default function GroupModal({
     }
   };
 
-  console.log(chat);
   return (
     chat && (
       <div className="modal-overlay absolute-center">
@@ -81,8 +83,11 @@ export default function GroupModal({
                 }}
                 maxLength={50}
               />
-              <button type="submit" className="btn-submit">
-                Add
+              <button
+                type="submit"
+                className="btn-submit flex justify-center align-center"
+              >
+                {!loading ? "Add" : <div className="spinner"></div>}
               </button>
             </div>
           </form>
