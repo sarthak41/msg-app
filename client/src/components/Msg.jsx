@@ -33,7 +33,9 @@ export default function Msg({
       e.preventDefault();
 
       const res = await axios.patch(
-        `${import.meta.env.VITE_API_ROUTE}/chat/${chatId}/messages/${msgId}`,
+        `${
+          import.meta.env.VITE_API_ROUTE
+        }/api/chat/${chatId}/messages/${msgId}`,
         { content: editedMsg },
         {
           headers: {

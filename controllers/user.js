@@ -64,7 +64,6 @@ exports.login = async (req, res, next) => {
 exports.setBio = async (req, res, next) => {
   try {
     const {bio} = req.body;
-    console.log(bio);
 
     const user = await User.findByIdAndUpdate(req.user._id, { bio }, { new: true });
 
@@ -95,7 +94,7 @@ exports.setProfilePicture = async (req, res, next) => {
 
     const user = await User.findByIdAndUpdate(req.user._id, {profilePicture, pfpId}, {new: true});
 
-    cloudinary.uploader.destroy(origPfpId).then((res)=>console.log(res));
+    cloudinary.uploader.destroy(origPfpId).then(()=>res.status(200).json(user));
 
     return res.status(200).json(user);
   } catch (error) {

@@ -23,7 +23,7 @@ export default function GroupModal({
       setLoading(true);
 
       const res = await axios.patch(
-        `${import.meta.env.VITE_API_ROUTE}/chat/${chat._id}/members`,
+        `${import.meta.env.VITE_API_ROUTE}/api/chat/${chat._id}/members`,
         { username: addUsername },
         {
           headers: {
@@ -44,7 +44,9 @@ export default function GroupModal({
       e.preventDefault();
 
       const res = await axios.patch(
-        `${import.meta.env.VITE_API_ROUTE}/chat/${chat._id}/members/${memId}`,
+        `${import.meta.env.VITE_API_ROUTE}/api/chat/${
+          chat._id
+        }/members/${memId}`,
         {},
         {
           headers: {

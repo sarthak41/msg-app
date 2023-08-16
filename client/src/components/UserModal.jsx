@@ -40,7 +40,7 @@ export default function UserModal({
         const cloud_data = await cloud_res.json();
 
         const res = await axios.patch(
-          `${import.meta.env.VITE_API_ROUTE}/users/pfp`,
+          `${import.meta.env.VITE_API_ROUTE}/api/users/pfp`,
           {
             profilePicture: cloud_data.secure_url,
             pfpId: cloud_data.public_id,
@@ -69,7 +69,7 @@ export default function UserModal({
 
       if (bio !== originalBio) {
         const res = await axios.patch(
-          `${import.meta.env.VITE_API_ROUTE}/users/bio`,
+          `${import.meta.env.VITE_API_ROUTE}/api/users/bio`,
           { bio },
           {
             headers: {
@@ -94,7 +94,7 @@ export default function UserModal({
 
       if (color !== originalColor) {
         const res = await axios.patch(
-          `${import.meta.env.VITE_API_ROUTE}/users/color/${color}`,
+          `${import.meta.env.VITE_API_ROUTE}/api/users/color/${color}`,
           {},
           {
             headers: {

@@ -22,7 +22,7 @@ export default function Signup() {
       for (const e of errorDivs) {
         e.classList.add("hidden");
       }
-      await axios.post(`${import.meta.env.VITE_API_ROUTE}/users/signup`, {
+      await axios.post(`${import.meta.env.VITE_API_ROUTE}/api/users/signup`, {
         email,
         username,
         password,

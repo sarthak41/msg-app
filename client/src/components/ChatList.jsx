@@ -33,11 +33,14 @@ export default function ChatList({
 
   const getChatList = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_ROUTE}/chat`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_ROUTE}/api/chat`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const chats = res.data.map((chat) => {
         if (!chat.isGroup) {
@@ -63,7 +66,7 @@ export default function ChatList({
   const getChat = async (chatId) => {
     try {
       const messages = await axios.get(
-        `${import.meta.env.VITE_API_ROUTE}/chat/${chatId}/messages`,
+        `${import.meta.env.VITE_API_ROUTE}/api/chat/${chatId}/messages`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -72,7 +75,7 @@ export default function ChatList({
       );
 
       let chat = await axios.get(
-        `${import.meta.env.VITE_API_ROUTE}/chat/${chatId}`,
+        `${import.meta.env.VITE_API_ROUTE}/api/chat/${chatId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -105,7 +108,7 @@ export default function ChatList({
       if (groupName.trim() === "") return;
 
       const res = await axios.post(
-        `${import.meta.env.VITE_API_ROUTE}/chat/create/dm`,
+        `${import.meta.env.VITE_API_ROUTE}/api/chat/create/dm`,
         { username: friendUsername },
         {
           headers: {
@@ -134,7 +137,7 @@ export default function ChatList({
       setLoading2(true);
 
       const res = await axios.post(
-        `${import.meta.env.VITE_API_ROUTE}/chat/create/group`,
+        `${import.meta.env.VITE_API_ROUTE}/api/chat/create/group`,
         { chatName: groupName },
         {
           headers: {

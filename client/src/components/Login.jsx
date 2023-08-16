@@ -23,7 +23,7 @@ export default function Login({ setUser }) {
         e.classList.add("hidden");
       }
       const res = await axios.post(
-        `${import.meta.env.VITE_API_ROUTE}/users/login`,
+        `${import.meta.env.VITE_API_ROUTE}/api/users/login`,
         { email, password }
       );
       setUser(res.data);

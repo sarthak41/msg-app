@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require("cors");
 const http = require("http");
+const path = require("path")
 const { Server } = require("socket.io");
 const { instrument } = require("@socket.io/admin-ui");
 
@@ -21,15 +22,24 @@ require("./config/passport");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const chatRouter = require("./routes/chat");
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/chat", chatRouter);
+app.use("/api", indexRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/chat", chatRouter);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
+
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, '/client/dist')));
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
+  );
+}
 
 const io = new Server(server, {
   cors: {
@@ -39,15 +49,11 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("Client connected");
-
   socket.on("join-chat", (room) => {
     socket.join(room);
-    console.log(`User joined chat ${room}`);
   });
 
   socket.on("new-message", (message) => {
-    console.log("Sending message...");
     socket.to(message.chat).emit("receive-message", message);
   });
 
