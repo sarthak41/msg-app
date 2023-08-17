@@ -22,7 +22,7 @@ export default function Login({ setUser }) {
       for (const e of errorDivs) {
         e.classList.add("hidden");
       }
-      const res = await axios.post("http://localhost:5000/api/users/login", {
+      const res = await axios.post("/api/users/login", {
         email,
         password,
       });
