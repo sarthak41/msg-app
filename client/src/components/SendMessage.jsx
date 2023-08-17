@@ -20,7 +20,7 @@ export default function SendMessage({
 
       if (content.trim() !== "") {
         const res = await axios.post(
-          `${import.meta.env.VITE_API_ROUTE}/api/chat/${chatId}/messages`,
+          `/api/chat/${chatId}/messages`,
           {
             content: content.trim(),
           },

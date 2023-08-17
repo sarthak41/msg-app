@@ -1,7 +1,6 @@
 const Message = require("../models/message");
 const Chat = require("../models/chat");
 const User = require("../models/user");
-// const mongoose = require("mongoose");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.chatList = async (req, res) => {

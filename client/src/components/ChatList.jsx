@@ -33,14 +33,11 @@ export default function ChatList({
 
   const getChatList = async () => {
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_ROUTE}/api/chat`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get("/api/chat", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const chats = res.data.map((chat) => {
         if (!chat.isGroup) {
@@ -65,23 +62,17 @@ export default function ChatList({
 
   const getChat = async (chatId) => {
     try {
-      const messages = await axios.get(
-        `${import.meta.env.VITE_API_ROUTE}/api/chat/${chatId}/messages`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const messages = await axios.get(`/api/chat/${chatId}/messages`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      let chat = await axios.get(
-        `${import.meta.env.VITE_API_ROUTE}/api/chat/${chatId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      let chat = await axios.get(`/api/chat/${chatId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!chat.data.isGroup) {
         const chatName = chat.data.members.find(
@@ -108,7 +99,7 @@ export default function ChatList({
       if (groupName.trim() === "") return;
 
       const res = await axios.post(
-        `${import.meta.env.VITE_API_ROUTE}/api/chat/create/dm`,
+        "/api/chat/create/dm",
         { username: friendUsername },
         {
           headers: {
@@ -137,7 +128,7 @@ export default function ChatList({
       setLoading2(true);
 
       const res = await axios.post(
-        `${import.meta.env.VITE_API_ROUTE}/api/chat/create/group`,
+        "/api/chat/create/group",
         { chatName: groupName },
         {
           headers: {
