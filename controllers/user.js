@@ -4,8 +4,8 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const user = require("../models/user");
 require("dotenv").config();
-const cloudinary = require('cloudinary').v2;
 
+const cloudinary = require('cloudinary').v2;
 cloudinary.config({
   secure: true,
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -87,12 +87,15 @@ exports.setColor = async (req, res, next) => {
 
 exports.setProfilePicture = async (req, res, next) => {
   try {
-    let origPfpId = await User.findById(req.user._id);
-    origPfpId = origPfpId.pfpId;
+    const origPfpId = (await User.findById(req.user._id)).pfpId;
 
-    const {profilePicture, pfpId} = req.body;
+    const image = req.file;
 
-    const user = await User.findByIdAndUpdate(req.user._id, {profilePicture, pfpId}, {new: true});
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    const cloudRes = await cloudinary.uploader.unsigned_upload(dataURI, "chat-app", {resource_type: "auto"});
+
+    const user = await User.findByIdAndUpdate(req.user._id, {profilePicture: cloudRes.secure_url, pfpId: cloudRes.public_id}, {new: true});
 
     cloudinary.uploader.destroy(origPfpId).then(()=>res.status(200).json(user));
 

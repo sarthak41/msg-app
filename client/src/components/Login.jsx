@@ -22,7 +22,10 @@ export default function Login({ setUser }) {
       for (const e of errorDivs) {
         e.classList.add("hidden");
       }
-      const res = await axios.post("/api/users/login", { email, password });
+      const res = await axios.post("http://localhost:5000/api/users/login", {
+        email,
+        password,
+      });
       setUser(res.data);
       localStorage.setItem("userToken", JSON.stringify(res.data));
 

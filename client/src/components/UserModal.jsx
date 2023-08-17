@@ -28,29 +28,14 @@ export default function UserModal({
         (image.type === "image/jpeg" || image.type === "image/png")
       ) {
         const data = new FormData();
-        data.append("file", image);
-        data.append("upload_preset", "chat-app");
-        data.append("cloud_name", import.meta.env.VITE_CLOUDNAME);
+        data.append("image", image);
 
-        const cloud_res = await fetch(import.meta.env.VITE_CLOUDINARY, {
-          method: "post",
-          body: data,
-        });
-
-        const cloud_data = await cloud_res.json();
-
-        const res = await axios.patch(
-          "/api/users/pfp",
-          {
-            profilePicture: cloud_data.secure_url,
-            pfpId: cloud_data.public_id,
+        const res = await axios.patch("/api/users/pfp", data, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        });
 
         const userToken = {
           _id: res.data._id,
@@ -63,6 +48,7 @@ export default function UserModal({
         };
 
         localStorage.setItem("userToken", JSON.stringify(userToken));
+        setUser(userToken);
         setImage(undefined);
         setLoading(false);
       }
